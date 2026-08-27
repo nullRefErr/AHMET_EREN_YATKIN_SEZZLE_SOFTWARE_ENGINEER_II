@@ -1,0 +1,174 @@
+:root {
+  --surface: #ffffff;
+  --surface-sunken: #f1f3f5;
+  --ink: #16181d;
+  --ink-muted: #5c6370;
+  --line: #d7dbe0;
+  --accent: #2f6feb;
+  --accent-ink: #ffffff;
+  --danger: #b3261e;
+  --danger-surface: #fdeceb;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #16181d;
+    --surface-sunken: #1e2128;
+    --ink: #f2f4f7;
+    --ink-muted: #9aa2b1;
+    --line: #2e333d;
+    --accent: #5b8def;
+    --accent-ink: #0d0f13;
+    --danger: #f2b8b5;
+    --danger-surface: #3b1a18;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: var(--surface-sunken);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.app {
+  width: min(24rem, 100%);
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+
+.app__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.display {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 4rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface-sunken);
+  border-radius: 0.75rem;
+}
+
+.display__value {
+  /* clamp keeps a long result readable on a phone without shrinking it on a desktop. */
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.display__badge {
+  flex: none;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--danger-surface);
+  color: var(--danger);
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.error__retry {
+  flex: none;
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  background: none;
+  border: 1px solid currentcolor;
+  border-radius: 0.4rem;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.keypad {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.keypad__digits,
+.keypad__operations,
+.keypad__actions {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.keypad__digits {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.keypad__operations {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.keypad__actions {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.key {
+  /* 44px is the smallest comfortable touch target on a phone (Apple HIG). */
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.5rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.key:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.key:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.key:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.key--operation {
+  color: var(--accent);
+}
+
+.key--equals {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
