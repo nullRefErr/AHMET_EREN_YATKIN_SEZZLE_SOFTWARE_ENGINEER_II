@@ -30,5 +30,5 @@ repeated here.
 
 ## Outstanding
 
-- Push to a remote — **the remaining half of deliverable 1**. `git init` and the first commit are
-  done at `5a1125d`; no remote is configured yet.
+- Push to a remote — **the remaining half of deliverable 1**. The repository and its history exist;
+  no remote is configured yet.
