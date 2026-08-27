@@ -211,4 +211,31 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 
 ---
 
+## 29
+
+> these are the
+> Deliverables
+>
+> 1. Git repository with frontend and backend code
+> 2. README with setup instructions, API examples, and design decisions
+> 3. Unit tests and coverage report
+> 4. Optional: Dockerfile to run frontend + backend together
+>
+> Instructions
+>
+> 1. Use any AI tooling you would like
+> 2. Spend ~2–4 hours on this assignment. Prioritize correctness, clarity, and maintainability over extra features.
+> 3. Push your solution to GitHub, GitLab, or another Git repository.
+> 4. Share the repository link with us for evaluation.
+> 5. Share any prompts that you used in your work
+> 6. Make sure your README includes:
+>    * Setup instructions
+>    * How to run the frontend and backend
+>    * Examples of API calls (if using REST)
+>    * Design decisions or assumptions
+>
+> lets check according to this
+
+---
+
 <!-- Append each new prompt below, verbatim. Prompts only — no commentary. -->
