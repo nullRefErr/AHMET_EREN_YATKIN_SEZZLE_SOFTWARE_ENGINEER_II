@@ -20,7 +20,8 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     -trimpath -ldflags="-s -w -X main.version=${VERSION}" \
     -o /out/server ./cmd/server
 
-# No shell, no package manager, no root. Roughly 15 MB and close to nothing to attack.
+# No shell, no package manager, no root: close to nothing to attack. The image is about 35 MB,
+# nearly all of it the static binary.
 FROM gcr.io/distroless/static-debian12:nonroot
 COPY --from=builder /out/server /server
 USER nonroot:nonroot

@@ -15,10 +15,8 @@ lint:  ## Lint both sides
 	cd backend && go vet ./... && golangci-lint run ./...
 	cd frontend && pnpm lint
 
-cover:  ## Produce the backend coverage report
-	cd backend && go test -race -coverprofile=coverage.out ./...
-	cd backend && go tool cover -func=coverage.out
-	cd backend && go tool cover -html=coverage.out -o coverage.html
+cover:  ## Regenerate COVERAGE.md from both test suites
+	./scripts/coverage.sh
 
 up:  ## Start the whole system
 	docker compose up --build

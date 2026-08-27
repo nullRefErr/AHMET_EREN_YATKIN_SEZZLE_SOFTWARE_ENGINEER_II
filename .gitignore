@@ -1,6 +1,7 @@
 # Go
 coverage.out
 coverage.html
+# COVERAGE.md is generated too, but committed: it is a deliverable.
 /backend/bin/
 
 # Node

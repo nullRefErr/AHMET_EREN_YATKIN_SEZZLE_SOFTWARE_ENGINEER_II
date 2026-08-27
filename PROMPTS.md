@@ -4,10 +4,12 @@ Required by the assignment: *"Share any prompts that you used in your work."*
 
 Tool: Claude Code (CLI), model Claude Opus 5.
 
+Every prompt I typed is here, verbatim and in order. The one thing not reproduced is the
+assignment e-mail itself, quoted at entry 2 — it is Sezzle's document, not my prompt.
+
 Two subagents were written during the work and given standing instructions of their own: `Worker`
 builds a phase test-first, `Officer` audits the result against the brief and `CLAUDE.md`. Those
 instructions are prompts too, and they are in `.claude/agents/`.
-Every prompt is recorded verbatim, in chronological order, in the language it was typed.
 Turkish prompts are followed by an English translation.
 
 ---
@@ -186,6 +188,18 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 ## 25
 
 > Check frontend to be able to render mobile view
+
+---
+
+## 26
+
+> check given job description and codebase aaccording to requirements, I caught one for example, add coverage, have you added ?
+
+---
+
+## 27
+
+> wait for officer's report then fix all of them
 
 ---
 
