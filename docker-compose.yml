@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        VERSION: ${VERSION:-dev}
+    environment:
+      PORT: "8080"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      CACHE_SIZE: ${CACHE_SIZE:-1024}
+      SHUTDOWN_TIMEOUT: ${SHUTDOWN_TIMEOUT:-10s}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      # The image has no shell and no curl, so the binary probes itself.
+      test: ["CMD", "/server", "-healthcheck"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
