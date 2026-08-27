@@ -143,4 +143,22 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 
 ---
 
+## 19
+
+> first of all I want you to write conventional commits, split written code into a logical parts and commit these, you could follow feature/branch approach also
+
+---
+
+## 20
+
+> check if there is any leftover phases
+
+---
+
+## 21
+
+> you can create a repo and push this
+
+---
+
 <!-- Append each new prompt below, verbatim. Prompts only — no commentary. -->

@@ -28,7 +28,7 @@ repeated here.
 `go vet` · `golangci-lint run` · `go test -race` · `eslint` · `tsc --noEmit` — all clean.
 `docker compose up --build` verified from a clean clone.
 
-## Outstanding
+## Delivery
 
-- Push to a remote — **the remaining half of deliverable 1**. The repository and its history exist;
-  no remote is configured yet.
+All five deliverables in `SPEC.md` §6 are met. The repository is at
+<https://github.com/nullRefErr/AHMET_EREN_YATKIN_SEZZLE_SOFTWARE_ENGINEER_II>.
