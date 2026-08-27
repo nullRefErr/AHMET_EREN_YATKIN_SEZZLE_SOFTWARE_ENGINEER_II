@@ -1,0 +1,22 @@
+version: "2"
+
+linters:
+  enable:
+    - bodyclose     # a response body left open leaks a connection
+    - errorlint     # errors.Is / errors.As used correctly
+    - gocritic
+    - gosec
+    - ineffassign
+    - noctx         # no HTTP request without a context
+    - revive
+    - unconvert
+  exclusions:
+    rules:
+      # Test files may assert loosely and use fixed values; the production rules stay strict.
+      - path: _test\.go
+        linters: [gosec, errcheck]
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
