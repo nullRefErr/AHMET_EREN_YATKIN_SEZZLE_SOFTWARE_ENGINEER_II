@@ -175,4 +175,18 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 
 ---
 
+## 24
+
+> sqrt ve percentage de test et
+
+*"Test sqrt and percentage as well."*
+
+---
+
+## 25
+
+> Check frontend to be able to render mobile view
+
+---
+
 <!-- Append each new prompt below, verbatim. Prompts only — no commentary. -->

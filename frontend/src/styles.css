@@ -32,13 +32,21 @@
 
 body {
   margin: 0;
-  min-height: 100dvh;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
   background: var(--surface-sunken);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* The layout lives on #root, not on body. React mounts into a div of its own, and a
+   centred wrapper with no width of its own shrinks to its content — which left the
+   calculator using 234px of a 375px phone, because .app's `100%` resolved against the
+   shrunken wrapper rather than the screen. */
+#root {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .app {
