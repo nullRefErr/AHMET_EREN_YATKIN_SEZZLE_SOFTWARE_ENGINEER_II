@@ -78,10 +78,13 @@ setting on the command line (`PORT=9999 go run ./cmd/server`) or export it.
 ```bash
 make test    # both test suites, backend with the race detector
 make lint    # golangci-lint, go vet, eslint
-make cover   # coverage report, text and HTML
+make cover   # regenerate COVERAGE.md, plus browsable HTML
 make up      # docker compose up --build
 make down    # stop and remove volumes
 ```
+
+Anything touching the front end installs its dependencies first, so these work on a fresh clone
+with nothing set up.
 
 ---
 
