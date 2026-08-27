@@ -238,4 +238,10 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 
 ---
 
+## 30
+
+> when we run tests is coverage file created newly ? if not it should be created
+
+---
+
 <!-- Append each new prompt below, verbatim. Prompts only — no commentary. -->

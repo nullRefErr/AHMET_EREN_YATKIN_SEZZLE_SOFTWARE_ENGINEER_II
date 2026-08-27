@@ -6,20 +6,20 @@ help:  ## List the available targets
 deps:  ## Install the front-end dependencies
 	cd frontend && pnpm install --frozen-lockfile
 
-test: test-backend test-frontend  ## Run every test
+test: deps  ## Run both suites and regenerate COVERAGE.md
+	./scripts/coverage.sh
 
-test-backend:  ## Run the Go tests with the race detector
+cover: test  ## The same run, named for the report it produces
+
+test-backend:  ## Go tests only, without coverage — the fast loop while writing code
 	cd backend && go test -race ./...
 
-test-frontend: deps  ## Run the frontend tests
+test-frontend: deps  ## Front-end tests only, without coverage — the fast loop
 	cd frontend && pnpm test
 
 lint: deps  ## Lint both sides
 	cd backend && go vet ./... && golangci-lint run ./...
 	cd frontend && pnpm lint
-
-cover: deps  ## Regenerate COVERAGE.md from both test suites
-	./scripts/coverage.sh
 
 up:  ## Start the whole system
 	docker compose up --build
