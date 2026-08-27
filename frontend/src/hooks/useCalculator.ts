@@ -36,10 +36,11 @@ export function useCalculator() {
     };
   }, []);
 
-  const submit = useCallback(async () => {
+  /** Sends the calculation on screen, and reports whether it produced a result. */
+  const submit = useCallback(async (): Promise<boolean> => {
     const request = requestFrom(state);
     if (request === null || state.pending) {
-      return;
+      return false;
     }
 
     dispatch({ type: "submit" });
@@ -47,13 +48,36 @@ export function useCalculator() {
       const calculation = await calculate(request);
       setCached(calculation.cached);
       dispatch({ type: "result", value: calculation.result });
+      return true;
     } catch (error) {
       dispatch({
         type: "failure",
         code: error instanceof ApiError ? error.code : "INTERNAL_ERROR",
       });
+      return false;
     }
   }, [state]);
 
-  return { state, operations, cached, dispatch, submit };
+  /**
+   * Chooses the next operation, finishing whatever is already on screen first.
+   *
+   * Pressing an operator with a complete calculation showing means "give me that answer
+   * and carry on from it" — that is what every physical calculator does, and without it
+   * "75 + 52 - 30" would quietly discard the 75 + 52 and answer 22.
+   */
+  const chooseOperation = useCallback(
+    async (operation: string, operandCount: number) => {
+      if (state.entering && requestFrom(state) !== null) {
+        const computed = await submit();
+        if (!computed) {
+          // Leave the failure on screen rather than letting the operator clear it.
+          return;
+        }
+      }
+      dispatch({ type: "operator", operation, operandCount });
+    },
+    [state, submit],
+  );
+
+  return { state, operations, cached, dispatch, submit, chooseOperation };
 }

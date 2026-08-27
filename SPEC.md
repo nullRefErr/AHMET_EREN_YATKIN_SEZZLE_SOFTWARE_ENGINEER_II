@@ -226,6 +226,10 @@ brittle and makes translation impossible.
 actions (`digit`, `decimal`, `negate`, `operator`, `submit`, `result`, `failure`, `clear`). Redux
 would be a large answer to a small question here, and a pure reducer is tested by calling it.
 
+Chaining is the one piece that is not in the reducer. Finishing a pending calculation before the
+next operator requires a request, and the reducer has no way to make one, so the hook decides when
+to send and the reducer only records what came back.
+
 ---
 
 ## 4. Non-functional requirements
@@ -399,8 +403,9 @@ Each is justified in a paragraph in the README's "Design decisions".
 
 - **A-01:** Authentication is not asked for. The README says when a gateway and JWT would be needed.
 - **A-02:** Persistence and calculation history are not asked for — neither appears in the brief.
-- **A-03:** Operations are binary; chained expression parsing (`2+3*4`) is not asked for. The
-  front-end state machine works on one binary operation at a time.
+- **A-03:** Operations are binary and chain left to right, the way a pocket calculator works:
+  pressing an operator finishes whatever is on screen first, so `9 + 1 * 2` is 20, not 11. Operator
+  precedence is not implemented and is not asked for.
 - **A-04:** The interface and its messages are in English, on the assumption the reviewer reads
   English.
 - **A-05:** "~2–4 hours" is a suggestion and the submission window is five business days. This took

@@ -16,7 +16,7 @@ const KEY_OPERATIONS: Record<string, string> = {
 };
 
 export function App() {
-  const { state, operations, cached, dispatch, submit } = useCalculator();
+  const { state, operations, cached, dispatch, submit, chooseOperation } = useCalculator();
 
   useEffect(() => {
     function handleKey(event: KeyboardEvent) {
@@ -43,17 +43,13 @@ export function App() {
       const name = KEY_OPERATIONS[key];
       const operation = operations.find((candidate) => candidate.name === name);
       if (operation) {
-        dispatch({
-          type: "operator",
-          operation: operation.name,
-          operandCount: operation.operands,
-        });
+        void chooseOperation(operation.name, operation.operands);
       }
     }
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [dispatch, operations, submit]);
+  }, [chooseOperation, dispatch, operations, submit]);
 
   // The badge belongs to the value on screen, so it disappears the moment that value is
   // no longer a result.
@@ -71,6 +67,7 @@ export function App() {
         operations={operations}
         disabled={state.pending}
         dispatch={dispatch}
+        onOperation={(operation, operandCount) => void chooseOperation(operation, operandCount)}
         onSubmit={() => void submit()}
       />
     </main>

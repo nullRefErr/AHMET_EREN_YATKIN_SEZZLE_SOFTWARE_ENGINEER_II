@@ -18,10 +18,11 @@ type KeypadProps = {
   operations: OperationInfo[];
   disabled: boolean;
   dispatch: (action: Action) => void;
+  onOperation: (operation: string, operandCount: number) => void;
   onSubmit: () => void;
 };
 
-export function Keypad({ operations, disabled, dispatch, onSubmit }: KeypadProps) {
+export function Keypad({ operations, disabled, dispatch, onOperation, onSubmit }: KeypadProps) {
   return (
     <div className="keypad">
       <div className="keypad__digits">
@@ -65,13 +66,7 @@ export function Keypad({ operations, disabled, dispatch, onSubmit }: KeypadProps
             className="key key--operation"
             aria-label={operation.name}
             disabled={disabled}
-            onClick={() =>
-              dispatch({
-                type: "operator",
-                operation: operation.name,
-                operandCount: operation.operands,
-              })
-            }
+            onClick={() => onOperation(operation.name, operation.operands)}
           >
             {SYMBOLS[operation.name] ?? operation.name}
           </button>

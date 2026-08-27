@@ -35,6 +35,31 @@ function stubBackend(...replies: Reply[]) {
   );
 }
 
+/** Serves the operations list and actually performs the arithmetic it is asked for. */
+function stubCalculator() {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/operations")) {
+        return new Response(JSON.stringify(operations), { status: 200 });
+      }
+      const body = JSON.parse(String(init?.body)) as { operation: string; operands: number[] };
+      const a = body.operands[0] ?? 0;
+      const b = body.operands[1] ?? 0;
+      const results: Record<string, number> = {
+        add: a + b,
+        subtract: a - b,
+        multiply: a * b,
+        divide: a / b,
+        sqrt: Math.sqrt(a),
+      };
+      return new Response(JSON.stringify({ ...body, result: results[body.operation] ?? 0, cached: false }), {
+        status: 200,
+      });
+    }),
+  );
+}
+
 function ok(result: number, cached = false) {
   return { status: 200, body: { operation: "add", operands: [1, 2], result, cached } };
 }
@@ -184,5 +209,55 @@ describe("while a calculation is in flight", () => {
 
     release();
     expect(await screen.findByRole("status")).toHaveTextContent("5");
+  });
+});
+
+// Pressing an operator with a complete calculation on screen finishes it first, the way
+// every physical calculator does. Without this, "75 + 52 - 30" silently drops the 75 + 52
+// and answers 22.
+describe("chaining operations", () => {
+  it("computes the pending operation when the next operator is pressed", async () => {
+    stubCalculator();
+    const user = await renderApp();
+
+    await user.click(screen.getByRole("button", { name: "7" }));
+    await user.click(screen.getByRole("button", { name: "5" }));
+    await user.click(screen.getByRole("button", { name: "add" }));
+    await user.click(screen.getByRole("button", { name: "5" }));
+    await user.click(screen.getByRole("button", { name: "2" }));
+    await user.click(screen.getByRole("button", { name: "subtract" }));
+
+    expect(await screen.findByRole("status")).toHaveTextContent("127");
+
+    await user.click(screen.getByRole("button", { name: "3" }));
+    await user.click(screen.getByRole("button", { name: "0" }));
+    await user.click(screen.getByRole("button", { name: "equals" }));
+
+    expect(await screen.findByRole("status")).toHaveTextContent("97");
+  });
+
+  it("does not compute when an operator is only being changed", async () => {
+    stubCalculator();
+    const user = await renderApp();
+
+    await user.click(screen.getByRole("button", { name: "8" }));
+    await user.click(screen.getByRole("button", { name: "add" }));
+    await user.click(screen.getByRole("button", { name: "multiply" }));
+    await user.click(screen.getByRole("button", { name: "3" }));
+    await user.click(screen.getByRole("button", { name: "equals" }));
+
+    expect(await screen.findByRole("status")).toHaveTextContent("24");
+  });
+
+  it("leaves a failure on screen instead of chaining past it", async () => {
+    stubBackend(failure("DIVISION_BY_ZERO"));
+    const user = await renderApp();
+
+    await user.click(screen.getByRole("button", { name: "1" }));
+    await user.click(screen.getByRole("button", { name: "divide" }));
+    await user.click(screen.getByRole("button", { name: "0" }));
+    await user.click(screen.getByRole("button", { name: "add" }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
   });
 });

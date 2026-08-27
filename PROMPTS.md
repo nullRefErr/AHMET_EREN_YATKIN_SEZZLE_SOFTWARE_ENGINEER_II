@@ -161,4 +161,18 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 
 ---
 
+## 22
+
+> run the project and lets do a manuel test
+
+---
+
+## 23
+
+> işlemlerde yanlışlık var, 75 + 52 - 30 = 22 çıkıyor
+
+*"The operations are wrong, 75 + 52 - 30 gives 22."*
+
+---
+
 <!-- Append each new prompt below, verbatim. Prompts only — no commentary. -->

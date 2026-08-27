@@ -302,8 +302,12 @@ whatever was in progress.
 ### Front-end state is a reducer
 
 Calculator behaviour lives in one pure reducer with explicit actions. It has no React and no
-network in it, so all of it is tested by calling a function. Redux would be a large answer to a
-small question here.
+network in it, so every state transition is tested by calling a function. Redux would be a large
+answer to a small question here.
+
+One decision sits outside it: pressing an operator has to finish whatever calculation is already on
+screen, and finishing one means a request. A pure reducer cannot make requests, so the hook decides
+when to send and the reducer only records the answer.
 
 Three libraries the plan called for were left out after the scope narrowed: a server-state library
 for a single POST, a schema validator for a four-field response, and a mock-service worker for
@@ -317,8 +321,8 @@ a `NaN` on screen.
 
 - **No authentication.** Nothing in the brief calls for it. It would belong in a gateway, not here.
 - **No persistence.** Calculation history is not requested, so nothing is stored beyond the cache.
-- **Binary operations only.** The keypad computes `a op b`; it does not parse chained expressions
-  like `2 + 3 * 4` with operator precedence.
+- **Binary operations, chained left to right.** Pressing an operator finishes the calculation on
+  screen and carries the answer forward, so `9 + 1 * 2` is 20. There is no operator precedence.
 - **Interface text is English**, on the assumption the reviewer reads English.
 - **Time budget.** The brief suggests 2–4 hours. This landed at roughly 7, with the extra time in
   tests and documentation, both of which the brief lists as deliverables.
@@ -366,7 +370,8 @@ was written before one existed that required it.
 - **A commutative hit echoes the stored operand order.** Asking for `3 + 2` after `2 + 3` was
   computed returns `operands: [2, 3]`. The result is identical; the echo is not.
 - **`float64`, not decimal.** Fine for a calculator, wrong for money.
-- **No expression parsing.** `2 + 3 * 4` cannot be entered as one expression.
+- **No operator precedence.** Operators chain left to right like a pocket calculator, so
+  `9 + 1 * 2` is 20 rather than 11. There is no expression to type and no precedence to apply.
 - **No rate limiting.** It belongs at an edge that does not exist yet.
 - **TLS terminates at the edge.** The service speaks plain HTTP inside the compose network, on the
   assumption of a proxy in front of it in a real deployment.
