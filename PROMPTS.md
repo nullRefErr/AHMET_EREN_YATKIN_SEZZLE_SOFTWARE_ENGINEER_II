@@ -203,4 +203,12 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 
 ---
 
+## 28
+
+> gerek yok, hepsini commitleyip push yapalım
+
+*"No need, let's commit and push everything."*
+
+---
+
 <!-- Append each new prompt below, verbatim. Prompts only — no commentary. -->
