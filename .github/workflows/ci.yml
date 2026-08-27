@@ -26,9 +26,12 @@ jobs:
         run: go vet ./...
 
       # G-2
+      # Pinned: the action's default is not guaranteed to understand a v2 config, and a
+      # golangci-lint built against an older Go refuses this module's language version.
       - name: Lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v9
         with:
+          version: v2.13.1
           working-directory: backend
 
       # G-3 — the race detector is the point; the cache is written from concurrent handlers.
@@ -57,7 +60,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # The version comes from frontend/package.json's packageManager field, so CI and a
+      # local checkout cannot drift apart.
       - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
 
       - uses: actions/setup-node@v4
         with:
