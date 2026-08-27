@@ -17,9 +17,9 @@ test-backend:  ## Go tests only, without coverage — the fast loop while writin
 test-frontend: deps  ## Front-end tests only, without coverage — the fast loop
 	cd frontend && pnpm test
 
-lint: deps  ## Lint both sides
+lint: deps  ## Lint and type-check both sides
 	cd backend && go vet ./... && golangci-lint run ./...
-	cd frontend && pnpm lint
+	cd frontend && pnpm lint && pnpm typecheck
 
 up:  ## Start the whole system
 	docker compose up --build

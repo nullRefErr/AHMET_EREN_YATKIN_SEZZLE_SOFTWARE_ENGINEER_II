@@ -244,4 +244,12 @@ checklist. It is reproduced in `CLAUDE.md`, not here.
 
 ---
 
+## 31
+
+> README'yi de bir kontrol et, coverage bölümü güncel mi
+
+*"Check the README as well — is the coverage section current?"*
+
+---
+
 <!-- Append each new prompt below, verbatim. Prompts only — no commentary. -->

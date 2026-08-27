@@ -77,7 +77,7 @@ setting on the command line (`PORT=9999 go run ./cmd/server`) or export it.
 
 ```bash
 make test    # both suites with the race detector, and rewrite COVERAGE.md
-make lint    # golangci-lint, go vet, eslint
+make lint    # go vet, golangci-lint, eslint, tsc
 make up      # docker compose up --build
 make down    # stop and remove volumes
 ```
@@ -365,15 +365,23 @@ The numbers matter less than what is behind them, so here is what each layer is 
 | `config` | Defaults, parsing, and that bad values stop the process |
 | `cmd/server` | Wiring and signal handling, so only the health probe is unit-tested. Exercising the rest means running a process, which is why this is the one thinly covered package and why that is deliberate |
 | Front-end reducer | Every state transition, including recovering from an error and continuing from a result |
-| Front-end components | The real reducer and client driven against a stubbed `fetch`, queried by accessible role |
+| `useCalculator` | The parts that need a request and so cannot live in the reducer: chaining `75 + 52 - 30` into two calculations, a failure stopping the chain, and retry after a network error |
+| Front-end components | The real reducer and client driven against a stubbed `fetch`, queried by accessible role, including the keypad built from the API and keys disabled while a request is in flight |
 
 Two details are deliberate throughout: errors are compared with `errors.Is` against sentinels
 rather than by string, and floats are compared with a delta rather than `==`. Front-end tests query
 by accessible role rather than test ids, which tests the accessibility tree and the behaviour at
 the same time.
 
-Everything is developed test-first: each layer began with a failing test, and no production code
-was written before one existed that required it.
+Every layer was developed test-first: each began with a failing test, run and seen to fail for the
+right reason, and no production code was written before one existed that required it.
+
+There is one exception and it is worth naming. The responsive layout fix — the calculator was
+using 234px of a 375px screen — has no test. The bug is in layout, and jsdom does not lay anything
+out, so the front-end suite cannot see it before or after the fix. It was found by measuring in a
+real browser and verified the same way. Covering it properly would mean a browser-driving test
+framework, which is a dependency worth deciding on deliberately rather than adding inside a bug
+fix.
 
 ---
 
